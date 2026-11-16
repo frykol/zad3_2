@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Zad 3.2</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 2rem;
+                color: #202a35;
+                background: #f3f6f8;
+                font-family: system-ui, sans-serif;
+            }
+
+            table {
+                width: 100%;
+                min-width: 560px;
+                border-collapse: collapse;
+                background: #fff;
+                box-shadow: 0 2px 10px rgb(22 37 52 / 10%);
+            }
+
+            th,
+            td {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #dce3e8;
+                text-align: left;
+            }
+
+            th {
+                color: #fff;
+                background: #245c63;
+                font-size: 0.9rem;
+                font-weight: 650;
+            }
+
+            tbody tr:nth-child(even) {
+                background: #f1f6f5;
+            }
+
+            tbody tr:hover {
+                background: #e3efed;
+            }
+
+            @media (max-width: 640px) {
+                body {
+                    padding: 1rem;
+                    overflow-x: auto;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Station Id</th>
+                    <th>Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                </tr>
+            </thead>
+            <tbody id="station_body">
+
+            </tbody>
+        </table>
+
+        <script src="src.js"></script>
+    </body>
+</html>
