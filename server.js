@@ -54,6 +54,33 @@ const server = http.createServer(async (request, response) => {
     return;
   }
 
+    if (request.method === 'GET' && requestUrl.pathname === '/api/datasets') {
+    const token = process.env.NOAA_TOKEN;
+    if (!token) {
+      response.writeHead(500, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ error: 'NOAA_TOKEN is not configured' }));
+      return;
+    }
+
+    try {
+      const upstreamUrl = new URL('https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets');
+      upstreamUrl.search = requestUrl.search;
+      const upstream = await fetch(upstreamUrl, {
+        headers: { token },
+        signal: AbortSignal.timeout(15000),
+      });
+      const body = await upstream.text();
+      response.writeHead(upstream.status, {
+        'Content-Type': upstream.headers.get('content-type') || 'application/json',
+      });
+      response.end(body);
+    } catch (error) {
+      response.writeHead(502, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ error: 'NOAA request failed' }));
+    }
+    return;
+  }
+
   if (request.method === 'GET' && ['/', '/index.html', '/src.js'].includes(requestUrl.pathname)) {
     const fileName = requestUrl.pathname === '/' ? 'index.html' : requestUrl.pathname.slice(1);
     const contentType = fileName.endsWith('.js') ? 'text/javascript; charset=utf-8' : 'text/html; charset=utf-8';
